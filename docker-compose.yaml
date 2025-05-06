@@ -13,7 +13,7 @@ services:
       - ./result:/out
     command: >
       sh -c "
-      nix build .#packages.x86_64-linux.default --out-link ./iso-out &&
+      nix build .#packages.x86_64-linux.default --out-link ./iso-out --impure &&
       mkdir -p /out &&
       cp -v ./iso-out/iso/*.iso /out/
       "
