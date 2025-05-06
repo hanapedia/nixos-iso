@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  nixos-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - TAILSCALE_AUTH_KEY=${TAILSCALE_AUTH_KEY}
+    environment:
+      NIX_CONFIG: "experimental-features = nix-command flakes"
+    volumes:
+      - ./result:/out
+    command: >
+      sh -c "
+      nix build .#packages.x86_64-linux.default --out-link ./iso-out &&
+      mkdir -p /out &&
+      cp -v ./iso-out/iso/*.iso /out/
+      "
