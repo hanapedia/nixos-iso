@@ -1,5 +1,5 @@
 {
-  description = "Custom NixOS Installation ISO with Tailscale and SSH";
+  description = "Reusable NixOS Auto-Installer ISO with Tailscale";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -9,10 +9,7 @@
   outputs = { self, nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs {
-          inherit system;
-        };
-
+        pkgs = import nixpkgs { inherit system; };
         isoConfig = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
@@ -25,6 +22,5 @@
         };
       in {
         packages.default = isoConfig.config.system.build.isoImage;
-        nixosConfigurations.customIso = isoConfig;
       });
 }
